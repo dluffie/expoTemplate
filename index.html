@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CESA Project Expo – Activity Point Management System</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c8973a;
+    --deep-blue: #1a2744;
+    --mid-blue: #2c4a8c;
+    --accent-orange: #e07b3a;
+    --cream: #fdf8f0;
+    --border: #2c4a8c;
+    --tag-bg: linear-gradient(135deg, #e8a96a 0%, #c8793a 100%);
+    --header-gradient: linear-gradient(135deg, #1a2744 0%, #2c4a8c 60%, #1a2744 100%);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #e8e0d4;
+    font-family: 'Source Sans 3', sans-serif;
+    color: #1a1a2e;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    min-height: 100vh;
+  }
+
+  .controls {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .controls button {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-print { background: var(--deep-blue); color: #fff; box-shadow: 0 3px 10px rgba(26,39,68,0.4); }
+  .btn-print:hover { background: var(--mid-blue); transform: translateY(-1px); }
+  .btn-clear { background: #fff; color: var(--deep-blue); border: 2px solid var(--deep-blue) !important; }
+  .btn-clear:hover { background: var(--cream); }
+  .hint { font-size: 12px; color: #777; text-align: center; margin-bottom: 8px; }
+
+  /* ── A4 PAGE ── */
+  .page {
+    width: 794px;
+    background: var(--cream);
+    border-radius: 4px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.25);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--header-gradient);
+    border-bottom: 4px solid var(--gold);
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(200,151,58,0.1);
+    pointer-events: none;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    padding: 12px 22px 8px;
+    gap: 14px;
+  }
+  .logo-box {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 2px dashed rgba(200,151,58,0.7);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; text-align: center; padding: 4px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .logo-box:hover {
+    border-color: var(--gold);
+    background: rgba(255,255,255,0.2);
+  }
+  .logo-box .logo-placeholder {
+    font-size: 8px; color: rgba(255,255,255,0.55);
+    font-style: italic; line-height: 1.4; pointer-events: none;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+  }
+  .logo-box .logo-placeholder .upload-icon { font-size: 18px; }
+  .logo-box img.logo-img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    border-radius: 50%;
+    position: absolute; top: 0; left: 0;
+  }
+  .logo-box input[type=file] {
+    position: absolute; inset: 0;
+    opacity: 0; cursor: pointer; width: 100%; height: 100%;
+  }
+  .header-center { flex: 1; text-align: center; }
+  .college-name {
+    font-family: 'Oswald', sans-serif;
+    font-size: 17px; font-weight: 700;
+    letter-spacing: 1.5px; line-height: 1.2;
+    color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+  }
+  .assoc-name {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 3px; color: var(--gold);
+    text-transform: uppercase; margin-top: 3px;
+  }
+  .header-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 7px 22px 12px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .cesa-badge { font-family: 'Oswald', sans-serif; font-size: 22px; font-weight: 700; color: var(--gold); letter-spacing: 2px; }
+  .presents { font-family: 'Merriweather', serif; font-style: italic; font-size: 11px; color: rgba(255,255,255,0.65); }
+  .expo-title { font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; letter-spacing: 4px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .expo-title span { color: var(--gold); }
+  .date-badge { background: var(--accent-orange); color: #fff; font-family: 'Oswald', sans-serif; font-size: 15px; font-weight: 600; letter-spacing: 2px; padding: 4px 12px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+
+  /* ── PROJECT TITLE BAND ── */
+  .project-title-band {
+    background: linear-gradient(90deg, #1a2744, #2c4a8c, #1a2744);
+    padding: 10px 22px;
+    text-align: center;
+    border-bottom: 2px solid var(--gold);
+  }
+  .project-title-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 10px; font-weight: 600;
+    color: var(--gold); letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 3px;
+  }
+  .project-title-text {
+    font-family: 'Oswald', sans-serif;
+    font-size: 20px; font-weight: 700;
+    color: #fff; letter-spacing: 1px;
+    outline: none;
+    display: inline-block;
+    min-width: 200px;
+  }
+  .project-title-text:focus { border-bottom: 2px dashed var(--gold); }
+  .project-title-text:empty::before { content: attr(data-placeholder); color: rgba(255,255,255,0.3); }
+
+  /* ── BODY GRID ── */
+  .body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 14px;
+    gap: 12px;
+    flex: 1;
+  }
+
+  /* ── SECTION CARD ── */
+  .section {
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .section-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--tag-bg);
+    color: #fff;
+    font-family: 'Oswald', sans-serif;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 5px 12px;
+  }
+  .section-tag .icon { font-size: 13px; }
+  .section-content {
+    flex: 1;
+    padding: 9px 12px 10px;
+    font-size: 11.5px;
+    line-height: 1.65;
+    color: #2a2a3e;
+    outline: none;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .section-content:focus { background: #fafbff; }
+  .section-content:empty::before { content: attr(data-placeholder); color: #ccc; font-style: italic; }
+
+  /* bullet styling */
+  .section-content ul { padding-left: 16px; }
+  .section-content ul li { margin-bottom: 3px; }
+  .section-content p { margin-bottom: 5px; }
+  .section-content p:last-child { margin-bottom: 0; }
+  .section-content strong { color: var(--deep-blue); font-weight: 600; }
+
+  /* span helpers */
+  .span-right { grid-column: 2; }
+  .span-left  { grid-column: 1; }
+  .row-span-2 { grid-row: span 2; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 7px;
+    font-size: 9.5px; color: #aaa;
+    border-top: 1px solid #e0d8cc;
+    letter-spacing: 1px;
+  }
+
+  @media print {
+    @page { size: A4; margin: 0; }
+    body { background: none; padding: 0; display: block; }
+    .controls, .hint { display: none !important; }
+    .page { width: 100%; box-shadow: none; border-radius: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hint">✏️ Click any text to edit it directly &nbsp;|&nbsp; All sections are editable</div>
+<div class="controls">
+  <button class="btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+  <button class="btn-clear" onclick="clearAll()">🗑️ Clear All</button>
+</div>
+
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="logo-box" title="Click to upload College Logo">
+        <div class="logo-placeholder"><span class="upload-icon">🏫</span>Click to<br>add logo</div>
+        <img class="logo-img" id="collegeLogo" src="" alt="" style="display:none;">
+        <input type="file" accept="image/*" onchange="loadLogo(event,'collegeLogo')">
+      </div>
+      <div class="header-center">
+        <div class="college-name">GOVERNMENT POLYTECHNIC COLLEGE<br>KOTHAMANGALAM</div>
+        <div class="assoc-name">Computer Engineering Students Association</div>
+      </div>
+      <div class="logo-box" title="Click to upload CESA Logo">
+        <div class="logo-placeholder"><span class="upload-icon">🎓</span>Click to<br>add logo</div>
+        <img class="logo-img" id="cesaLogo" src="" alt="" style="display:none;">
+        <input type="file" accept="image/*" onchange="loadLogo(event,'cesaLogo')">
+      </div>
+    </div>
+    <div class="header-bottom">
+      <span class="cesa-badge">CESA</span>
+      <span class="presents">– Presents –</span>
+      <span class="expo-title">PROJECT <span>EXPO</span></span>
+      <span class="date-badge">MARCH 18</span>
+    </div>
+  </div>
+
+  <!-- ── PROJECT TITLE BAND ── -->
+  <div class="project-title-band">
+    <div class="project-title-label">Project Title</div>
+    <div class="project-title-text" contenteditable="true" data-placeholder="Enter Project Title…">AI-Assisted College Activity Point Management System</div>
+  </div>
+
+  <!-- ── BODY GRID ── -->
+  <div class="body">
+
+    <!-- LEFT col 1 ── Introduction -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">📖</span> Introduction</div>
+      <div class="section-content" contenteditable="true">
+        <p>Colleges require students to earn activity points through internships, workshops, sports, and technical events. Currently this process is mostly manual, causing delays, document mismanagement, and verification difficulties.</p>
+        <p>The proposed system is an <strong>AI-Assisted Activity Point Management System</strong> that allows students to upload certificates, automatically extract activity details using AI, and submit them for teacher verification — providing a structured digital workflow for students, teachers, and administrators.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT col 2 ── Objectives (tall) -->
+    <div class="section span-right row-span-2">
+      <div class="section-tag"><span class="icon">🎯</span> Objectives</div>
+      <div class="section-content" contenteditable="true">
+        <ul>
+          <li>Develop a centralized system for managing student activity points</li>
+          <li>Allow students to upload certificates for verification</li>
+          <li>Use AI (Google Gemini) to extract activity details from documents automatically</li>
+          <li>Enable teachers to verify and approve or reject activity submissions</li>
+          <li>Provide dashboards for tracking total activity points per student</li>
+          <li>Send email reminders for pending submissions and approvals</li>
+          <li>Implement role-based access control for Student, Teacher, and Admin</li>
+          <li>Support faculty-initiated activity submissions on behalf of students</li>
+          <li>Ensure data integrity with snapshot-based activity records</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LEFT col 1 ── System Users -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">👥</span> System Users</div>
+      <div class="section-content" contenteditable="true">
+        <p><strong>1. Students</strong> — Upload certificates, track earned activity points, update profile, and receive submission status notifications.</p>
+        <p><strong>2. Teachers / Class Tutors</strong> — Verify student activity submissions, approve or reject with remarks, and submit activities on behalf of students.</p>
+        <p><strong>3. Administrator</strong> — Manage users, assign teachers to classes, configure rules engine, and monitor system-wide activity.</p>
+      </div>
+    </div>
+
+    <!-- LEFT col 1 ── Technologies Used -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">🛠️</span> Technologies Used</div>
+      <div class="section-content" contenteditable="true">
+        <ul>
+          <li><strong>Frontend:</strong> React.js, Tailwind CSS</li>
+          <li><strong>Backend:</strong> Node.js + Express.js</li>
+          <li><strong>Database:</strong> MongoDB (Mongoose)</li>
+          <li><strong>AI / OCR:</strong> Google Gemini API + OCR fallback</li>
+          <li><strong>File Storage:</strong> AWS S3 (Presigned Uploads)</li>
+          <li><strong>Cache / Queue:</strong> Redis + Bull Queues</li>
+          <li><strong>Auth:</strong> JWT + Email OTP Verification</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- RIGHT col 2 ── Key Features (tall) -->
+    <div class="section span-right row-span-2">
+      <div class="section-tag"><span class="icon">⚡</span> Key Features</div>
+      <div class="section-content" contenteditable="true">
+        <ul>
+          <li>Student registration with <strong>email OTP verification</strong></li>
+          <li>Activity certificate upload with <strong>AI-powered data extraction</strong> (Gemini API)</li>
+          <li>OCR fallback for scanned / low-quality documents</li>
+          <li>Teacher <strong>verification panel</strong> — approve, reject, or request resubmission</li>
+          <li>Faculty submission for student activities</li>
+          <li><strong>Email reminders</strong> for pending submissions and approvals</li>
+          <li>Activity points calculation with configurable rules engine</li>
+          <li>Tiered point modifiers based on activity category and level</li>
+          <li>Role-based access control (Student / Teacher / Admin)</li>
+          <li>Timetable CSV sync for teacher class management</li>
+          <li>Admin dashboard — monitor all submissions, users, and stats</li>
+          <li>Permanent <strong>activity snapshots</strong> for data integrity</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LEFT col 1 ── Timeline -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">🗓️</span> Timeline</div>
+      <div class="section-content" contenteditable="true">
+        <p><strong>Start:</strong> October 21, 2025</p>
+        <ul>
+          <li><strong>Phase 1:</strong> Requirement Analysis & Planning</li>
+          <li><strong>Phase 2:</strong> System Design & Architecture</li>
+          <li><strong>Phase 3:</strong> Core Development (Auth, Upload, AI)</li>
+          <li><strong>Phase 4:</strong> Verification Workflow & Dashboards</li>
+          <li><strong>Phase 5:</strong> Testing & Bug Fixes</li>
+          <li><strong>Phase 6:</strong> Final Deployment — March 2026</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LEFT col 1 ── Expected Outcome -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">✅</span> Expected Outcome</div>
+      <div class="section-content" contenteditable="true">
+        <p>The system will <strong>streamline activity point management</strong> by digitizing certificate submission, automating data extraction using AI, and enabling efficient verification workflows — reducing administrative workload while giving students a transparent way to track their academic progress.</p>
+      </div>
+    </div>
+
+    <!-- RIGHT col 2 ── Final Structure (tall, spans remaining rows) -->
+    <div class="section span-right row-span-2">
+      <div class="section-tag"><span class="icon">🏗️</span> Final Structure</div>
+      <div class="section-content" contenteditable="true">
+        <p><strong>Client Layer</strong></p>
+        <ul>
+          <li>React.js Web App — Student / Teacher / Admin portals</li>
+        </ul>
+        <p><strong>API Layer</strong></p>
+        <ul>
+          <li>Node.js + Express REST API with JWT authentication</li>
+          <li>Role-based middleware for route protection</li>
+        </ul>
+        <p><strong>AI / Processing Layer</strong></p>
+        <ul>
+          <li>Google Gemini API → extract activity name, date, category from certificate</li>
+          <li>OCR fallback for scanned documents</li>
+          <li>Bull Queue for background processing jobs</li>
+        </ul>
+        <p><strong>Data Layer</strong></p>
+        <ul>
+          <li>MongoDB — Users, Activities, Submissions, Snapshots</li>
+          <li>Redis — Caching, session tokens, queue management</li>
+          <li>AWS S3 — Secure certificate file storage</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- LEFT col 1 ── Important Subproblems -->
+    <div class="section">
+      <div class="section-tag"><span class="icon">⚠️</span> Important Subproblems</div>
+      <div class="section-content" contenteditable="true">
+        <ul>
+          <li>Handling low-quality or handwritten certificate scans accurately</li>
+          <li>Preventing duplicate activity submissions</li>
+          <li>Designing a flexible rules engine for variable point categories</li>
+          <li>Ensuring secure presigned file uploads to AWS S3</li>
+          <li>Managing role-based access without breaking teacher workflows</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">CESA PROJECT EXPO &nbsp;·&nbsp; GOVERNMENT POLYTECHNIC COLLEGE KOTHAMANGALAM &nbsp;·&nbsp; MARCH 18, 2026</div>
+</div>
+
+<script>
+  function loadLogo(event, imgId) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = document.getElementById(imgId);
+      img.src = e.target.result;
+      img.style.display = 'block';
+      // hide placeholder text
+      img.parentElement.querySelector('.logo-placeholder').style.display = 'none';
+      img.parentElement.style.border = '2px solid rgba(200,151,58,0.7)';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function clearAll() {
+    if (confirm('Clear all filled content? This cannot be undone.')) {
+      document.querySelectorAll('[contenteditable]').forEach(el => {
+        if (el.classList.contains('project-title-text')) {
+          el.textContent = '';
+        } else {
+          el.innerHTML = '';
+        }
+      });
+    }
+  }
+  document.querySelectorAll('[contenteditable]').forEach(el => {
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        document.execCommand('insertText', false, '    ');
+      }
+    });
+  });
+</script>
+</body>
+</html>
