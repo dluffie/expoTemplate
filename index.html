@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CESA Project Expo – APMS</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;600&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/PptxGenJS@3.12.0/dist/pptxgen.bundle.js"></script>
+  <link rel="stylesheet" href="template-style.css">
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════
+  TOP MENU BAR
+══════════════════════════════ -->
+  <div id="menubar">
+    <div class="mb-brand">🎨 DESIGN</div>
+
+    <!-- Header Colors -->
+    <div class="mb-item" id="mi-hdr">
+      <button class="mb-btn" onclick="toggleMenu('mi-hdr')">Header <span class="arr">▼</span></button>
+      <div class="mb-drop">
+        <h4>Background</h4>
+        <div class="cr"><label>Left color</label> <input type="color" value="#1a2744" oninput="sv('--hdr1',this.value)">
+        </div>
+        <div class="cr"><label>Right color</label> <input type="color" value="#2c4a8c"
+            oninput="sv('--hdr2',this.value)"></div>
+        <div class="cr"><label>Gold / Accent</label> <input type="color" value="#c8973a"
+            oninput="sv('--gold',this.value)"></div>
+        <div class="cr"><label>Date badge</label> <input type="color" value="#e07b3a"
+            oninput="sv('--badge-bg',this.value)"></div>
+        <h4>Text Colors</h4>
+        <div class="cr"><label>College &amp; Expo</label><input type="color" value="#ffffff"
+            oninput="sv('--hdr-txt',this.value)"></div>
+        <div class="cr"><label>Project title</label> <input type="color" value="#ffffff"
+            oninput="sv('--title-txt',this.value)"></div>
+      </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="mb-item" id="mi-cards">
+      <button class="mb-btn" onclick="toggleMenu('mi-cards')">Cards <span class="arr">▼</span></button>
+      <div class="mb-drop">
+        <h4>Section Cards</h4>
+        <div class="cr"><label>Background</label> <input type="color" value="#ffffff"
+            oninput="sv('--content-bg',this.value)"></div>
+        <div class="cr"><label>Border color</label> <input type="color" value="#2c4a8c"
+            oninput="sv('--card-border',this.value)"></div>
+        <div class="cr">
+          <label>Border width</label>
+          <input type="range" min="0" max="6" value="2" step="1"
+            oninput="svpx('--card-bw',this.value);this.nextElementSibling.textContent=this.value+'px'">
+          <span class="rv">2px</span>
+        </div>
+        <div class="cr">
+          <label>Corner radius</label>
+          <input type="range" min="0" max="24" value="6" step="1"
+            oninput="svpx('--card-br',this.value);this.nextElementSibling.textContent=this.value+'px'">
+          <span class="rv">6px</span>
+        </div>
+        <div class="cr">
+          <label>Card spacing</label>
+          <input type="range" min="4" max="26" value="12" step="1"
+            oninput="svpx('--card-gap',this.value);this.nextElementSibling.textContent=this.value+'px'">
+          <span class="rv">12px</span>
+        </div>
+        <h4>Page</h4>
+        <div class="cr"><label>Page background</label><input type="color" value="#fdf8f0"
+            oninput="sv('--page-bg',this.value)"></div>
+      </div>
+    </div>
+
+    <!-- Labels -->
+    <div class="mb-item" id="mi-labels">
+      <button class="mb-btn" onclick="toggleMenu('mi-labels')">Labels <span class="arr">▼</span></button>
+      <div class="mb-drop">
+        <h4>Section Tag Bar</h4>
+        <div class="cr"><label>Color from</label> <input type="color" value="#e8a96a" oninput="sv('--tag1',this.value)">
+        </div>
+        <div class="cr"><label>Color to</label> <input type="color" value="#c8793a" oninput="sv('--tag2',this.value)">
+        </div>
+        <div class="cr"><label>Tag text color</label> <input type="color" value="#ffffff"
+            oninput="sv('--tag-txt',this.value)"></div>
+        <div class="cr">
+          <label>Tag font size</label>
+          <input type="range" min="8" max="16" value="11" step="1"
+            oninput="qall('.stag','fontSize',this.value+'px');this.nextElementSibling.textContent=this.value+'px'">
+          <span class="rv">11px</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Text -->
+    <div class="mb-item" id="mi-text">
+      <button class="mb-btn" onclick="toggleMenu('mi-text')">Text <span class="arr">▼</span></button>
+      <div class="mb-drop">
+        <h4>Content Text</h4>
+        <div class="cr"><label>Text color</label> <input type="color" value="#2a2a3e"
+            oninput="sv('--content-txt',this.value)"></div>
+        <div class="cr"><label>Footer color</label> <input type="color" value="#aaaaaa"
+            oninput="sv('--footer-txt',this.value)"></div>
+        <div class="cr">
+          <label>Font size</label>
+          <input type="range" min="8" max="16" value="11" step="0.5"
+            oninput="qall('.scont','fontSize',this.value+'px');this.nextElementSibling.textContent=this.value+'px'">
+          <span class="rv">11px</span>
+        </div>
+        <div class="cr">
+          <label>Font family</label>
+          <select onchange="qall('.scont','fontFamily',this.value)">
+            <option value="'Source Sans 3',sans-serif" selected>Source Sans 3</option>
+            <option value="'Oswald',sans-serif">Oswald</option>
+            <option value="'Merriweather',serif">Merriweather</option>
+            <option value="Georgia,serif">Georgia</option>
+            <option value="Arial,sans-serif">Arial</option>
+            <option value="'Courier New',monospace">Courier New</option>
+          </select>
+        </div>
+        <div class="cr">
+          <label>Line height</label>
+          <input type="range" min="1.2" max="2.2" value="1.7" step="0.1"
+            oninput="qall('.scont','lineHeight',this.value);this.nextElementSibling.textContent=parseFloat(this.value).toFixed(1)">
+          <span class="rv">1.7</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Themes -->
+    <div class="mb-item" id="mi-themes">
+      <button class="mb-btn" onclick="toggleMenu('mi-themes')">Themes <span class="arr">▼</span></button>
+      <div class="mb-drop">
+        <h4>Quick Themes — click to apply</h4>
+        <div class="swatch-row">
+          <div class="swatch" style="background:linear-gradient(135deg,#1a2744,#2c4a8c)" title="Navy (Default)"
+            onclick="applyTheme('navy')"></div>
+          <div class="swatch" style="background:linear-gradient(135deg,#0d3b2e,#1a7a55)" title="Forest Green"
+            onclick="applyTheme('green')"></div>
+          <div class="swatch" style="background:linear-gradient(135deg,#2d1b4e,#6a3d9a)" title="Deep Purple"
+            onclick="applyTheme('purple')"></div>
+          <div class="swatch" style="background:linear-gradient(135deg,#111,#444)" title="Midnight Black"
+            onclick="applyTheme('black')"></div>
+          <div class="swatch" style="background:linear-gradient(135deg,#7b1a1a,#c0392b)" title="Crimson Red"
+            onclick="applyTheme('red')"></div>
+          <div class="swatch" style="background:linear-gradient(135deg,#1a3a5c,#2980b9)" title="Sky Blue"
+            onclick="applyTheme('sky')"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-sep"></div>
+
+    <!-- Action buttons -->
+    <button class="mb-action mba-print" onclick="window.print()">🖨️ Print</button>
+    <button class="mb-action mba-pdf" onclick="savePDF()">📄 PDF</button>
+    <button class="mb-action mba-png" onclick="savePNG()">🖼️ PNG</button>
+    <button class="mb-action mba-canva" onclick="exportPPTX()">📊 PPTX</button>
+    <button class="mb-action mba-img" onclick="addCanvasImage()">📷 Image</button>
+
+    <div class="mb-spacer"></div>
+
+    <button class="mb-action mba-reset" onclick="resetAll()">↺ Reset</button>
+    <button class="mb-action mba-clear" onclick="clearText()">🗑️ Clear</button>
+  </div>
+
+  <!-- FLOATING TEXT TOOLBAR -->
+  <div id="floatBar">
+    <button class="fb" title="Bold" onclick="fmt('bold')"><b>B</b></button>
+    <button class="fb" title="Italic" onclick="fmt('italic')"><i>I</i></button>
+    <button class="fb" title="Underline" onclick="fmt('underline')"><u>U</u></button>
+    <button class="fb" title="Strike" onclick="fmt('strikeThrough')"><s>S</s></button>
+    <div class="fb-div"></div>
+    <input type="color" id="fb-clr" value="#1a1a2e" title="Text color" oninput="fmt('foreColor',this.value)">
+    <input type="color" id="fb-bg" value="#ffff00" title="Highlight" oninput="fmt('hiliteColor',this.value)">
+    <div class="fb-div"></div>
+    <select id="fb-sz" title="Font size" onchange="fmt('fontSize',this.value)">
+      <option value="1">8px</option>
+      <option value="2">10px</option>
+      <option value="3" selected>12px</option>
+      <option value="4">14px</option>
+      <option value="5">18px</option>
+      <option value="6">24px</option>
+      <option value="7">32px</option>
+    </select>
+    <select id="fb-fn" title="Font" onchange="fmt('fontName',this.value)">
+      <option value="'Source Sans 3',sans-serif">Source Sans</option>
+      <option value="'Oswald',sans-serif">Oswald</option>
+      <option value="'Merriweather',serif">Merriweather</option>
+      <option value="Arial,sans-serif">Arial</option>
+      <option value="Georgia,serif">Georgia</option>
+      <option value="'Courier New',monospace">Courier</option>
+    </select>
+    <div class="fb-div"></div>
+    <button class="fb" title="Left" onclick="fmt('justifyLeft')">⬅</button>
+    <button class="fb" title="Center" onclick="fmt('justifyCenter')">≡</button>
+    <button class="fb" title="Right" onclick="fmt('justifyRight')">➡</button>
+    <div class="fb-div"></div>
+    <button class="fb" title="Clear formatting" onclick="fmt('removeFormat')"
+      style="font-size:9px;width:36px">✕fmt</button>
+  </div>
+
+  <!-- EXPORT OVERLAY -->
+  <div id="exportOverlay">
+    <div class="exp-spinner"></div>
+    <div class="exp-box">
+      <div class="exp-icon" id="exp-icon">⏳</div>
+      <div class="exp-msg" id="exp-msg">Preparing…</div>
+      <div class="exp-sub" id="exp-sub">Please wait</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+    <div class="hint">✏️ <b>Click any text</b> to edit &nbsp;·&nbsp; <b>Double-click diagrams</b> to edit labels
+      &nbsp;·&nbsp; <b>Click shapes</b> to change color &nbsp;·&nbsp; <b>Drag ⠿</b> to reorder sections &nbsp;·&nbsp;
+      <b>📷 Image</b> to add draggable images &nbsp;·&nbsp;
+      <b>Hover diagrams</b> for add-shape toolbar
+    </div>
+
+    <div class="page">
+
+      <!-- HEADER (Logo parts untouched) -->
+      <div class="header">
+        <div class="header-inner">
+          <div class="logo-box">
+            <img class="college-logo-img" src="college-logo.png" alt="College Logo" style="display:block;">
+          </div>
+          <div class="header-center">
+            <div class="college-name" contenteditable="true">GOVERNMENT POLYTECHNIC COLLEGE<br>KOTHAMANGALAM</div>
+            <div class="assoc-name" contenteditable="true">Computer Engineering Students Association</div>
+          </div>
+          <div class="logo-box">
+            <img class="cesa-logo-img" src="cesa-logo.png" alt="CESA Logo" style="display:block;">
+          </div>
+        </div>
+        <div class="header-bottom">
+          <span class="cesa-badge" contenteditable="true">CESA</span>
+          <span class="presents" contenteditable="true">– Presents –</span>
+          <span class="expo-title" contenteditable="true">PROJECT <span>EXPO</span></span>
+          <span class="date-badge" contenteditable="true">MARCH 18</span>
+        </div>
+      </div>
+
+      <!-- TITLE BAND -->
+      <div class="title-band">
+        <div class="title-label" contenteditable="true">Project Title</div>
+        <div class="title-text" contenteditable="true" data-placeholder="Enter your project title…">AI-Assisted College
+          Activity Point Management System</div>
+      </div>
+
+      <!-- BODY GRID -->
+      <div class="body">
+
+        <!-- Abstract + Workflow -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">📖</span>&nbsp;Abstract</div>
+          <div class="scont" contenteditable="true">
+            <ul>
+              <li>The <strong>AI-Assisted Activity Point Management System (APMS)</strong> is a full-stack web and mobile
+                application designed to digitize and automate the college activity point workflow</li>
+              <li>Students upload certificates which are analyzed by <strong>Google Gemini AI</strong> for automatic data extraction</li>
+              <li>Teachers verify submissions and administrators manage rules, users, and analytics — all through role-based
+                dashboards</li>
+            </ul>
+          </div>
+          <div class="diagram-box">
+            <svg viewBox="0 0 340 75" xmlns="http://www.w3.org/2000/svg">
+              <rect class="dia-node" x="2" y="20" width="62" height="35" rx="6" fill="#dbeafe" stroke="#2563eb"
+                stroke-width="1.5" />
+              <text x="33" y="42" text-anchor="middle" font-size="8" font-weight="600" fill="#1e3a5f">Upload</text>
+              <polygon points="70,37.5 80,32 80,43" fill="#64748b" />
+              <rect class="dia-node" x="84" y="20" width="62" height="35" rx="6" fill="#fef3c7" stroke="#d97706"
+                stroke-width="1.5" />
+              <text x="115" y="36" text-anchor="middle" font-size="8" font-weight="600" fill="#92400e">AI Extract</text>
+              <text x="115" y="48" text-anchor="middle" font-size="7" fill="#92400e">(Gemini)</text>
+              <polygon points="152,37.5 162,32 162,43" fill="#64748b" />
+              <rect class="dia-node" x="166" y="20" width="62" height="35" rx="6" fill="#d1fae5" stroke="#059669"
+                stroke-width="1.5" />
+              <text x="197" y="42" text-anchor="middle" font-size="8" font-weight="600" fill="#065f46">Verify</text>
+              <polygon points="234,37.5 244,32 244,43" fill="#64748b" />
+              <rect class="dia-node" x="248" y="20" width="62" height="35" rx="6" fill="#ede9fe" stroke="#7c3aed"
+                stroke-width="1.5" />
+              <text x="279" y="36" text-anchor="middle" font-size="8" font-weight="600" fill="#5b21b6">Points</text>
+              <text x="279" y="48" text-anchor="middle" font-size="7" fill="#5b21b6">Awarded</text>
+              <text x="33" y="14" text-anchor="middle" font-size="6" fill="#94a3b8">Student</text>
+              <text x="115" y="14" text-anchor="middle" font-size="6" fill="#94a3b8">System</text>
+              <text x="197" y="14" text-anchor="middle" font-size="6" fill="#94a3b8">Teacher</text>
+              <text x="279" y="14" text-anchor="middle" font-size="6" fill="#94a3b8">Dashboard</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Objectives -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">🎯</span>&nbsp;Objectives</div>
+          <div class="scont" contenteditable="true">
+            <ul>
+              <li>Build a centralized platform for managing student activity points across departments</li>
+              <li>Automate certificate data extraction using <strong>Google Gemini AI</strong> with OCR fallback</li>
+              <li>Enable teacher verification workflow — approve, reject, or request resubmission</li>
+              <li>Provide real-time dashboards with analytics for students, teachers, and admins</li>
+              <li>Implement configurable <strong>rules engine</strong> for activity point calculation with tiered
+                modifiers</li>
+              <li>Support email notifications via <strong>Brevo/Resend/Nodemailer</strong> for reminders and status
+                updates</li>
+              <li>Deliver a cross-platform <strong>mobile app</strong> using React Native Expo</li>
+              <li>Ensure data integrity with permanent activity snapshots and audit logging</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- System Users -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">👥</span>&nbsp;System Users &amp; Roles</div>
+          <div class="scont" contenteditable="true">
+            <ul>
+              <li><strong>Students</strong> — Upload certificates for AI extraction, track earned activity points, view
+                submission status, and manage profile</li>
+              <li><strong>Teachers / Class Tutors</strong> — Verify and approve/reject submissions, submit activities on
+                behalf of students, manage class subscriptions, send reminders</li>
+              <li><strong>Administrator</strong> — Manage all users, configure rules engine, assign teachers to classes,
+                view system-wide analytics, and audit logs</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Technologies Used -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">🛠️</span>&nbsp;Technology Stack</div>
+          <div class="scont" contenteditable="true">
+            <ul>
+              <li><strong>Frontend:</strong> React.js (Vite), CSS3</li>
+              <li><strong>Mobile:</strong> React Native (Expo)</li>
+              <li><strong>Backend:</strong> Node.js + Express.js 5</li>
+              <li><strong>Database:</strong> MongoDB (Mongoose ODM)</li>
+              <li><strong>AI Engine:</strong> Google Gemini API (@google/generative-ai)</li>
+              <li><strong>File Storage:</strong> Cloudinary (image/document uploads)</li>
+              <li><strong>Email:</strong> Brevo + Resend + Nodemailer</li>
+              <li><strong>Auth:</strong> JWT + bcrypt + Email OTP Verification</li>
+              <li><strong>Deployment:</strong> Render (backend + static frontend)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Key Features -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">⚡</span>&nbsp;Key Features</div>
+          <div class="scont" contenteditable="true">
+            <ul>
+              <li>Student registration with <strong>email OTP verification</strong> and password reset</li>
+              <li>Certificate upload with <strong>AI-powered data extraction</strong> (Gemini API)</li>
+              <li>Manual activity entry with rich form inputs</li>
+              <li>Teacher <strong>verification panel</strong> — approve, reject, or request resubmission with remarks
+              </li>
+              <li>Faculty-initiated activity submission on behalf of students</li>
+              <li><strong>Email reminders</strong> for pending submissions and approvals</li>
+              <li>Configurable <strong>rules engine</strong> with category-based point tiers</li>
+              <li>Role-based access control (Student / Teacher / Admin)</li>
+              <li>Admin <strong>analytics dashboard</strong> with charts and statistics</li>
+              <li><strong>Audit logging</strong> for all critical system actions</li>
+              <li>Student profile management with Cloudinary image uploads</li>
+              <li>Cross-platform <strong>mobile application</strong> (Expo)</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- System Architecture Diagram -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">🏗️</span>&nbsp;System Architecture</div>
+          <div class="diagram-box">
+            <svg viewBox="0 0 340 210" xmlns="http://www.w3.org/2000/svg">
+              <!-- Client Layer -->
+              <text x="170" y="12" text-anchor="middle" font-size="7" font-weight="700" fill="#475569"
+                letter-spacing="2">CLIENT LAYER</text>
+              <rect class="dia-node" x="15" y="18" width="90" height="32" rx="5" fill="#dbeafe" stroke="#2563eb"
+                stroke-width="1.5" />
+              <text x="60" y="38" text-anchor="middle" font-size="8" font-weight="600" fill="#1e3a5f">React.js
+                Web</text>
+              <rect class="dia-node" x="120" y="18" width="100" height="32" rx="5" fill="#e0e7ff" stroke="#4f46e5"
+                stroke-width="1.5" />
+              <text x="170" y="38" text-anchor="middle" font-size="8" font-weight="600" fill="#3730a3">React Native
+                App</text>
+              <rect class="dia-node" x="235" y="18" width="90" height="32" rx="5" fill="#f0fdf4" stroke="#16a34a"
+                stroke-width="1.5" />
+              <text x="280" y="38" text-anchor="middle" font-size="8" font-weight="600" fill="#166534">Admin
+                Panel</text>
+              <!-- Arrows down -->
+              <line x1="60" y1="50" x2="60" y2="66" stroke="#94a3b8" stroke-width="1.2" />
+              <line x1="170" y1="50" x2="170" y2="66" stroke="#94a3b8" stroke-width="1.2" />
+              <line x1="280" y1="50" x2="280" y2="66" stroke="#94a3b8" stroke-width="1.2" />
+              <polygon points="57,64 60,70 63,64" fill="#94a3b8" />
+              <polygon points="167,64 170,70 173,64" fill="#94a3b8" />
+              <polygon points="277,64 280,70 283,64" fill="#94a3b8" />
+              <!-- API Layer -->
+              <text x="170" y="78" text-anchor="middle" font-size="7" font-weight="700" fill="#475569"
+                letter-spacing="2">API LAYER</text>
+              <rect class="dia-node" x="55" y="84" width="230" height="32" rx="5" fill="#fff7ed" stroke="#ea580c"
+                stroke-width="1.5" />
+              <text x="170" y="104" text-anchor="middle" font-size="9" font-weight="600" fill="#9a3412">Node.js +
+                Express.js REST API (JWT Auth)</text>
+              <!-- Arrows down -->
+              <line x1="110" y1="116" x2="110" y2="138" stroke="#94a3b8" stroke-width="1.2" />
+              <line x1="230" y1="116" x2="230" y2="138" stroke="#94a3b8" stroke-width="1.2" />
+              <polygon points="107,136 110,142 113,136" fill="#94a3b8" />
+              <polygon points="227,136 230,142 233,136" fill="#94a3b8" />
+              <!-- Service Layer -->
+              <text x="110" y="150" text-anchor="middle" font-size="7" font-weight="700" fill="#475569"
+                letter-spacing="1">AI ENGINE</text>
+              <rect class="dia-node" x="55" y="155" width="110" height="30" rx="5" fill="#fef3c7" stroke="#d97706"
+                stroke-width="1.5" />
+              <text x="110" y="174" text-anchor="middle" font-size="8" font-weight="600" fill="#92400e">Google Gemini
+                API</text>
+              <text x="230" y="150" text-anchor="middle" font-size="7" font-weight="700" fill="#475569"
+                letter-spacing="1">DATA LAYER</text>
+              <rect class="dia-node" x="180" y="155" width="65" height="30" rx="5" fill="#fce7f3" stroke="#db2777"
+                stroke-width="1.5" />
+              <text x="212" y="174" text-anchor="middle" font-size="8" font-weight="600" fill="#9d174d">MongoDB</text>
+              <rect class="dia-node" x="255" y="155" width="70" height="30" rx="5" fill="#ecfdf5" stroke="#10b981"
+                stroke-width="1.5" />
+              <text x="290" y="174" text-anchor="middle" font-size="8" font-weight="600"
+                fill="#065f46">Cloudinary</text>
+              <!-- Bottom labels -->
+              <text x="110" y="200" text-anchor="middle" font-size="6" fill="#94a3b8">OCR + Data Extraction</text>
+              <text x="212" y="200" text-anchor="middle" font-size="6" fill="#94a3b8">Users, Activities, Rules</text>
+              <text x="290" y="200" text-anchor="middle" font-size="6" fill="#94a3b8">File Storage</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Database Schema -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">🗄️</span>&nbsp;Database Schema</div>
+          <div class="diagram-box">
+            <svg viewBox="0 0 340 160" xmlns="http://www.w3.org/2000/svg">
+              <!-- User -->
+              <rect class="dia-node" x="5" y="5" width="90" height="45" rx="4" fill="#dbeafe" stroke="#2563eb"
+                stroke-width="1.5" />
+              <text x="50" y="20" text-anchor="middle" font-size="8" font-weight="700" fill="#1e3a5f">User</text>
+              <text x="50" y="32" text-anchor="middle" font-size="6" fill="#475569">name, email, role</text>
+              <text x="50" y="42" text-anchor="middle" font-size="6" fill="#475569">dept, semester, profile</text>
+              <!-- Activity -->
+              <rect class="dia-node" x="125" y="5" width="90" height="45" rx="4" fill="#fef3c7" stroke="#d97706"
+                stroke-width="1.5" />
+              <text x="170" y="20" text-anchor="middle" font-size="8" font-weight="700" fill="#92400e">Activity</text>
+              <text x="170" y="32" text-anchor="middle" font-size="6" fill="#475569">title, category, points</text>
+              <text x="170" y="42" text-anchor="middle" font-size="6" fill="#475569">status, certificate, AI data</text>
+              <!-- Rule -->
+              <rect class="dia-node" x="245" y="5" width="90" height="45" rx="4" fill="#d1fae5" stroke="#059669"
+                stroke-width="1.5" />
+              <text x="290" y="20" text-anchor="middle" font-size="8" font-weight="700" fill="#065f46">Rule</text>
+              <text x="290" y="32" text-anchor="middle" font-size="6" fill="#475569">category, level</text>
+              <text x="290" y="42" text-anchor="middle" font-size="6" fill="#475569">base points, modifiers</text>
+              <!-- Notification -->
+              <rect class="dia-node" x="5" y="75" width="90" height="40" rx="4" fill="#ede9fe" stroke="#7c3aed"
+                stroke-width="1.5" />
+              <text x="50" y="90" text-anchor="middle" font-size="8" font-weight="700"
+                fill="#5b21b6">Notification</text>
+              <text x="50" y="102" text-anchor="middle" font-size="6" fill="#475569">message, type, read</text>
+              <!-- AuditLog -->
+              <rect class="dia-node" x="125" y="75" width="90" height="40" rx="4" fill="#fce7f3" stroke="#db2777"
+                stroke-width="1.5" />
+              <text x="170" y="90" text-anchor="middle" font-size="8" font-weight="700" fill="#9d174d">AuditLog</text>
+              <text x="170" y="102" text-anchor="middle" font-size="6" fill="#475569">action, actor, target</text>
+              <!-- OTP -->
+              <rect class="dia-node" x="245" y="75" width="90" height="40" rx="4" fill="#fff7ed" stroke="#ea580c"
+                stroke-width="1.5" />
+              <text x="290" y="90" text-anchor="middle" font-size="8" font-weight="700" fill="#9a3412">OTP</text>
+              <text x="290" y="102" text-anchor="middle" font-size="6" fill="#475569">email, code, expiry</text>
+              <!-- Relationship lines -->
+              <line x1="95" y1="27" x2="125" y2="27" stroke="#64748b" stroke-width="1" stroke-dasharray="4,2" />
+              <text x="110" y="23" text-anchor="middle" font-size="5" fill="#94a3b8">1:N</text>
+              <line x1="215" y1="27" x2="245" y2="27" stroke="#64748b" stroke-width="1" stroke-dasharray="4,2" />
+              <text x="230" y="23" text-anchor="middle" font-size="5" fill="#94a3b8">N:1</text>
+              <line x1="50" y1="50" x2="50" y2="75" stroke="#64748b" stroke-width="1" stroke-dasharray="4,2" />
+              <text x="58" y="65" font-size="5" fill="#94a3b8">1:N</text>
+              <line x1="170" y1="50" x2="170" y2="75" stroke="#64748b" stroke-width="1" stroke-dasharray="4,2" />
+              <!-- Legend -->
+              <rect x="5" y="130" width="330" height="22" rx="3" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1" />
+              <text x="170" y="145" text-anchor="middle" font-size="6" fill="#64748b">8 Collections: User · Activity ·
+                Rule · Notification · AuditLog · OTP · PasswordResetOtp · NewUser</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Data Flow Diagram -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">🔄</span>&nbsp;Activity Verification Flow</div>
+          <div class="diagram-box">
+            <svg viewBox="0 0 330 310" xmlns="http://www.w3.org/2000/svg">
+              <!-- Student uploads -->
+              <circle class="dia-node" cx="165" cy="22" r="18" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5" />
+              <text x="165" y="26" text-anchor="middle" font-size="7" font-weight="600" fill="#1e3a5f">Student</text>
+              <line x1="165" y1="40" x2="165" y2="55" stroke="#64748b" stroke-width="1.2" />
+              <polygon points="162,53 165,59 168,53" fill="#64748b" />
+              <!-- Upload Certificate -->
+              <rect class="dia-node" x="110" y="62" width="110" height="28" rx="5" fill="#e0e7ff" stroke="#4f46e5"
+                stroke-width="1.5" />
+              <text x="165" y="80" text-anchor="middle" font-size="8" font-weight="600" fill="#3730a3">Upload
+                Certificate</text>
+              <line x1="165" y1="90" x2="165" y2="105" stroke="#64748b" stroke-width="1.2" />
+              <polygon points="162,103 165,109 168,103" fill="#64748b" />
+              <!-- AI Processing -->
+              <rect class="dia-node" x="100" y="112" width="130" height="28" rx="5" fill="#fef3c7" stroke="#d97706"
+                stroke-width="1.5" />
+              <text x="165" y="130" text-anchor="middle" font-size="8" font-weight="600" fill="#92400e">🤖 Gemini AI
+                Extraction</text>
+              <line x1="165" y1="140" x2="165" y2="155" stroke="#64748b" stroke-width="1.2" />
+              <polygon points="162,153 165,159 168,153" fill="#64748b" />
+              <!-- Decision Diamond -->
+              <rect class="dia-node" x="130" y="160" width="70" height="30" rx="3" fill="#fce7f3" stroke="#db2777"
+                stroke-width="1.5" transform="rotate(0)" />
+              <text x="165" y="179" text-anchor="middle" font-size="7" font-weight="700" fill="#9d174d">Teacher
+                Review</text>
+              <!-- Approve branch -->
+              <line x1="130" y1="175" x2="55" y2="175" stroke="#16a34a" stroke-width="1.2" />
+              <line x1="55" y1="175" x2="55" y2="220" stroke="#16a34a" stroke-width="1.2" />
+              <polygon points="52,218 55,224 58,218" fill="#16a34a" />
+              <text x="85" y="170" font-size="7" fill="#16a34a" font-weight="600">Approve ✓</text>
+              <rect class="dia-node" x="15" y="227" width="80" height="28" rx="5" fill="#d1fae5" stroke="#059669"
+                stroke-width="1.5" />
+              <text x="55" y="245" text-anchor="middle" font-size="8" font-weight="600" fill="#065f46">Points
+                Added</text>
+              <!-- Reject branch -->
+              <line x1="200" y1="175" x2="275" y2="175" stroke="#dc2626" stroke-width="1.2" />
+              <line x1="275" y1="175" x2="275" y2="220" stroke="#dc2626" stroke-width="1.2" />
+              <polygon points="272,218 275,224 278,218" fill="#dc2626" />
+              <text x="240" y="170" font-size="7" fill="#dc2626" font-weight="600">Reject ✗</text>
+              <rect class="dia-node" x="235" y="227" width="80" height="28" rx="5" fill="#fee2e2" stroke="#dc2626"
+                stroke-width="1.5" />
+              <text x="275" y="245" text-anchor="middle" font-size="8" font-weight="600" fill="#991b1b">Resubmit</text>
+              <!-- Notify -->
+              <line x1="55" y1="255" x2="55" y2="272" stroke="#64748b" stroke-width="1.2" />
+              <line x1="275" y1="255" x2="275" y2="272" stroke="#64748b" stroke-width="1.2" />
+              <polygon points="52,270 55,276 58,270" fill="#64748b" />
+              <polygon points="272,270 275,276 278,270" fill="#64748b" />
+              <rect class="dia-node" x="15" y="278" width="80" height="24" rx="12" fill="#ede9fe" stroke="#7c3aed"
+                stroke-width="1.2" />
+              <text x="55" y="294" text-anchor="middle" font-size="7" font-weight="600" fill="#5b21b6">📧 Email
+                Sent</text>
+              <rect class="dia-node" x="235" y="278" width="80" height="24" rx="12" fill="#ede9fe" stroke="#7c3aed"
+                stroke-width="1.2" />
+              <text x="275" y="294" text-anchor="middle" font-size="7" font-weight="600" fill="#5b21b6">📧 Email
+                Sent</text>
+            </svg>
+          </div>
+        </div>
+
+        <!-- API Endpoints -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">🔗</span>&nbsp;API Architecture</div>
+          <div class="scont" contenteditable="true">
+            <ul>
+              <li><strong>Auth Routes</strong> — Register, Login, OTP verify, Password reset, Google OAuth</li>
+              <li><strong>Activity Routes</strong> — CRUD, AI extraction, certificate upload, status management</li>
+              <li><strong>Teacher Routes</strong> — Verification, class subscription, student management, reminders,
+                submit-for-student</li>
+              <li><strong>Admin Routes</strong> — User management, rules CRUD, analytics, settings, audit logs</li>
+              <li><strong>User Routes</strong> — Profile update, password change, image upload</li>
+              <li><strong>Notification Routes</strong> — Fetch, mark read, clear</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">🗓️</span>&nbsp;Development Timeline</div>
+          <div class="scont" contenteditable="true">
+            <ul>
+              <li><strong>Start:</strong> October 21, 2025</li>
+              <li><strong>Phase 1:</strong> Requirement Analysis &amp; System Design</li>
+              <li><strong>Phase 2:</strong> Backend API &amp; Database Architecture</li>
+              <li><strong>Phase 3:</strong> Core Development (Auth, Upload, AI Integration)</li>
+              <li><strong>Phase 4:</strong> Teacher Verification &amp; Admin Dashboards</li>
+              <li><strong>Phase 5:</strong> Mobile App Development (React Native Expo)</li>
+              <li><strong>Phase 6:</strong> Testing, Bug Fixes &amp; Final Deployment — March 2026</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Expected Outcome -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">✅</span>&nbsp;Expected Outcome</div>
+          <div class="scont" contenteditable="true">
+            <ul>
+              <li>The system will <strong>streamline activity point management</strong> by digitizing certificate
+                submission, automating data extraction using AI, and enabling efficient verification workflows</li>
+              <li>Reduces administrative workload while giving students a transparent way to track their academic progress</li>
+              <li>The cross-platform mobile app extends accessibility beyond the web</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Team -->
+        <div class="section">
+          <button class="sec-del" onclick="removeSection(this)" title="Remove section">✕</button>
+          <div class="stag" contenteditable="true"><span class="icon">👨‍💻</span>&nbsp;Team &amp; Guide</div>
+          <div class="scont" contenteditable="true">
+            <ul>
+              <li><strong>Project Guide:</strong> [Faculty Name], [Department]</li>
+              <li><strong>Team Members:</strong></li>
+              <li>[Student Name 1] — [Role / Contribution]</li>
+              <li>[Student Name 2] — [Role / Contribution]</li>
+              <li>[Student Name 3] — [Role / Contribution]</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="add-sec-row">
+          <button class="add-sec-btn" onclick="addTextSection()">＋ Text Section</button>
+          <button class="add-sec-btn" onclick="addImageSection()">🖼️ Image Section</button>
+          <button class="add-sec-btn" onclick="addDiagramSection()">📊 Diagram Section</button>
+        </div>
+
+      </div><!-- /body -->
+
+      <div class="footer" contenteditable="true">CESA PROJECT EXPO &nbsp;·&nbsp; GOVERNMENT POLYTECHNIC COLLEGE
+        KOTHAMANGALAM &nbsp;·&nbsp; MARCH 18, 2026</div>
+    </div><!-- /page -->
+  </div><!-- /main -->
+
+  <script src="template-script.js"></script>
+</body>
+
+</html>
